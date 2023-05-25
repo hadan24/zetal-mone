@@ -1,7 +1,10 @@
 # Heavily built upon what was done in the 2nd homework assignment.
-
+from wav_io import read_wav, write_wav, play, tone_args
 from numpy import transpose, multiply
 from scipy.signal import firwin, lfilter
+
+args = tone_args()
+rate, data = read_wav(args.wav)
 
 # function for calculating the knob value to a gain coefficient based on the knob value, 
 # knob offset, and a 3 db per volume setp increase.
@@ -10,6 +13,13 @@ def knob_to_gain(knob_val, knob_offset):
         return 0
     db = 3.0 * (knob_val - knob_offset)
     return pow(10.0, db / 20.0)
+
+# a 2D array indicates a stereo file, so it must be transposed.
+# https://numpy.org/doc/stable/reference/generated/numpy.transpose.html
+stereo = False
+if data.ndim == 2:
+    stereo = True
+    transpose(data)
 
 def filter(rate, data):
     # scipy cookbook documentation for making a low pass filter, adapted for band and highpass filters
@@ -49,3 +59,13 @@ if(data.ndim == 2):
 # otherwise, the file is mono and can be processed normally.
 else:    
     filtered = filter(rate, data)
+
+# converting stereo file back
+if stereo:
+    transpose(data)
+# either writing the new wav file, or playing it - whichever was selected.
+if(args.out):
+    write_wav(args.out, rate, data)
+
+else:
+    play(rate, data)
