@@ -1,7 +1,7 @@
 # Heavily built upon what was done in the 2nd homework assignment.
 from wav_io import read_wav, write_wav, play, tone_args
 from numpy import transpose, multiply
-from scipy.signal import firwin, lfilter
+from scipy.signal import firwin, lfilter, kaiserord
 
 args = tone_args()
 rate, data = read_wav(args.wav)
@@ -25,6 +25,17 @@ def filter(rate, data):
     # scipy cookbook documentation for making a low pass filter, adapted for band and highpass filters
     # https://scipy-cookbook.readthedocs.io/items/FIRFilter.html
     # also used firwin documentation: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.firwin.html
+
+    # designing a 5hz transition rate, with a 60db attenuation in each stop band. will adjust as needed when testing
+    # kaiser windowing will be used for filtering, makes things less harsh.
+    #width = 5.0 / (rate / 2.0)
+    #ripple_db = 60.0
+    #numtaps, beta = kaiserord(ripple_db, width)
+
+    #lowpass_taps = firwin(numtaps, 300, pass_zero = 'lowpass', fs = rate, window = ('kaiser', beta))
+    #bandpass_taps = firwin(numtaps, [300, 4000], pass_zero = 'bandpass', fs = rate, window = ('kaiser', beta))
+    #highpass_taps = firwin(numtaps, 4000, pass_zero = 'highpass', fs = rate, window = ('kaiser', beta))
+    
     lowpass_taps = firwin(255, 300, pass_zero = 'lowpass', fs = rate)
     bandpass_taps = firwin(255, [300, 4000], pass_zero = 'bandpass', fs = rate)
     highpass_taps = firwin(255, 4000, pass_zero = 'highpass', fs = rate)
@@ -55,17 +66,15 @@ if(data.ndim == 2):
     # putting the channels back together once they've been filtered, and transposing back
     stereo_data = (left_filtered + right_filtered)
     transpose(stereo_data)
+    filtered = stereo_data
 
 # otherwise, the file is mono and can be processed normally.
 else:    
     filtered = filter(rate, data)
 
-# converting stereo file back
-if stereo:
-    transpose(data)
 # either writing the new wav file, or playing it - whichever was selected.
 if(args.out):
-    write_wav(args.out, rate, data)
+    write_wav(args.out, rate, filtered)
 
 else:
-    play(rate, data)
+    play(rate, filtered)
