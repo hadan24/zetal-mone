@@ -14,13 +14,6 @@ def knob_to_gain(knob_val, knob_offset):
     db = 3.0 * (knob_val - knob_offset)
     return pow(10.0, db / 20.0)
 
-# a 2D array indicates a stereo file, so it must be transposed.
-# https://numpy.org/doc/stable/reference/generated/numpy.transpose.html
-stereo = False
-if data.ndim == 2:
-    stereo = True
-    transpose(data)
-
 def filter(rate, data):
     # scipy cookbook documentation for making a low pass filter, adapted for band and highpass filters
     # https://scipy-cookbook.readthedocs.io/items/FIRFilter.html
