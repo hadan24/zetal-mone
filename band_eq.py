@@ -1,7 +1,7 @@
 # Heavily built upon what was done in the 2nd homework assignment.
 from wav_io import read_wav, write_wav, play, tone_args
 from numpy import transpose, multiply
-from scipy.signal import firwin, lfilter, kaiserord
+from scipy.signal import firwin, lfilter
 
 args = tone_args()
 rate, data = read_wav(args.wav)
@@ -26,19 +26,11 @@ def filter(rate, data):
     # https://scipy-cookbook.readthedocs.io/items/FIRFilter.html
     # also used firwin documentation: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.firwin.html
 
-    # designing a 5hz transition rate, with a 60db attenuation in each stop band. will adjust as needed when testing
-    # kaiser windowing will be used for filtering, makes things less harsh.
-    #width = 5.0 / (rate / 2.0)
-    #ripple_db = 60.0
-    #numtaps, beta = kaiserord(ripple_db, width)
-
-    #lowpass_taps = firwin(numtaps, 300, pass_zero = 'lowpass', fs = rate, window = ('kaiser', beta))
-    #bandpass_taps = firwin(numtaps, [300, 4000], pass_zero = 'bandpass', fs = rate, window = ('kaiser', beta))
-    #highpass_taps = firwin(numtaps, 4000, pass_zero = 'highpass', fs = rate, window = ('kaiser', beta))
-    
-    lowpass_taps = firwin(255, 300, pass_zero = 'lowpass', fs = rate)
-    bandpass_taps = firwin(255, [300, 4000], pass_zero = 'bandpass', fs = rate)
-    highpass_taps = firwin(255, 4000, pass_zero = 'highpass', fs = rate)
+    # kaiser windowing will be used along with filtering, makes things less harsh when applying filters 
+    # and allows for some rolloff between bands - may want to adjust beta value?
+    lowpass_taps = firwin(255, 300, pass_zero = 'lowpass', fs = rate, window = ('kaiser', 13.0))
+    bandpass_taps = firwin(255, [300, 4000], pass_zero = 'bandpass', fs = rate, window = ('kaiser', 13.0))
+    highpass_taps = firwin(255, 4000, pass_zero = 'highpass', fs = rate, window = ('kaiser', 13.0))
 
     # now applying the filter using the lfilter function
     # lfilter documentation: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lfilter.html

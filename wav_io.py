@@ -1,4 +1,4 @@
-# Code for wav i/o taken from libtone.py of hw2. 
+# Code for wav i/o taken from libtone.py of hw2, originally created by Bart Massey
 import argparse
 from scipy import io
 import numpy as np
