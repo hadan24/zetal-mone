@@ -21,9 +21,9 @@ def filter(rate, data):
 
     # kaiser windowing will be used along with filtering, makes things less harsh when applying filters 
     # and allows for some rolloff between bands - may want to adjust beta value?
-    lowpass_taps = firwin(255, 300, pass_zero = 'lowpass', fs = rate, window = ('kaiser', 13.0))
-    bandpass_taps = firwin(255, [300, 4000], pass_zero = 'bandpass', fs = rate, window = ('kaiser', 13.0))
-    highpass_taps = firwin(255, 4000, pass_zero = 'highpass', fs = rate, window = ('kaiser', 13.0))
+    lowpass_taps = firwin(255, 300, pass_zero = 'lowpass', fs = rate, window = ('kaiser', 13.5))
+    bandpass_taps = firwin(255, [300, 4000], pass_zero = 'bandpass', fs = rate, window = ('kaiser', 13.5))
+    highpass_taps = firwin(255, 4000, pass_zero = 'highpass', fs = rate, window = ('kaiser', 13.5))
 
     # now applying the filter using the lfilter function
     # lfilter documentation: https://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.lfilter.html
