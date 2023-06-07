@@ -19,7 +19,9 @@ The manipulated `.wav` file defaults to playing to the default sound device, but
 Will add a link to a short video showing an example of code operation once complete.
 
 ## What worked, what didn't, and needed improvements
-TBD, need to fully implement distortion functionality to finish project before we can go into detail about what worked/didn't work
+Making the 3-band EQ functionality was probably the easiest part of the project. We were able to just directly implement and use the code previously written for
+the second assingment, as most distortion pedals with EQ features use a 3-band to control bass, midrange, and treble levels. 
+(Still mostly TBD, need to fully implement distortion functionality to finish project before we can go into detail about what worked/didn't work)
 
 ## License
 The license for this project can be found [here.](/LICENSE.txt)
