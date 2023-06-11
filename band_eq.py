@@ -1,6 +1,7 @@
 # Heavily built upon what was done in the 2nd homework assignment.
-from wav_io import args, rate, data
-from numpy import transpose, multiply
+from wav_io import args, rate
+from distort import distorted
+from numpy import transpose, multiply, column_stack
 from scipy.signal import firwin, lfilter
 
 # calculates a gain coefficient based on the knob value, 
@@ -39,17 +40,17 @@ def filter(rate, data):
 
 # a 2D array indicates a stereo file, so it must be transposed, and the channels processed independently
 # https://numpy.org/doc/stable/reference/generated/numpy.transpose.html
-if(data.ndim == 2):
-    transposed = transpose(data)
+if (distorted.ndim == 2):
+    transposed = transpose(distorted)
     left_channel = transposed[0]
     right_channel = transposed[1]
     left_filtered = filter(rate, left_channel)
     right_filtered = filter(rate, right_channel)
-    # putting the channels back together once they've been filtered, and transposing back
-    stereo_data = (left_filtered + right_filtered)
-    transpose(stereo_data)
+    
+    # putting the channels back together once they've been filtered
+    stereo_data = column_stack((left_filtered, right_filtered))
     filtered = stereo_data
 
 # otherwise, the file is mono and can be processed normally.
 else:    
-    filtered = filter(rate, data)
+    filtered = filter(rate, distorted)
