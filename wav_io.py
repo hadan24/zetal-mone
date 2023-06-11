@@ -5,15 +5,13 @@ import numpy as np
 import sounddevice as sd
 
 # Size of output buffer in frames. Less than 1024 is not
-# recommended, as most audio interfaces will choke
-# horribly.
+# recommended, as most audio interfaces will choke horribly.
 BUFFER_SIZE = 2048
 
 # Read from a 16-bit WAV file. Returns the sample rate in
 # samples per second, and the samples as a numpy array of
 # IEEE 64-bit floats. The array will be 1D for mono data,
-# and will be a 2D array of 2-element frames for stereo
-# data.
+# and will be a 2D array of 2-element frames for stereo data.
 def read_wav(filename):
     rate, data = io.wavfile.read(filename)
     assert data.dtype == np.int16
@@ -106,3 +104,5 @@ def tone_args():
     argp.add_argument("wav", help="input audio file")
     return argp.parse_args()
 
+args = tone_args()
+rate, data = read_wav(args.wav)

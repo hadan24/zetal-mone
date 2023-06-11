@@ -1,13 +1,10 @@
 # Heavily built upon what was done in the 2nd homework assignment.
-from wav_io import read_wav, write_wav, play, tone_args
+from wav_io import args, rate, data
 from numpy import transpose, multiply
 from scipy.signal import firwin, lfilter
 
-args = tone_args()
-rate, data = read_wav(args.wav)
-
-# function for calculating the knob value to a gain coefficient based on the knob value, 
-# knob offset, and a 3 db per volume setp increase.
+# calculates a gain coefficient based on the knob value, 
+# knob offset, and a 3 db per volume set increase.
 def knob_to_gain(knob_val, knob_offset):
     if knob_val < 0.1:
         return 0
@@ -56,10 +53,3 @@ if(data.ndim == 2):
 # otherwise, the file is mono and can be processed normally.
 else:    
     filtered = filter(rate, data)
-
-# either writing the new wav file, or playing it - whichever was selected.
-if(args.out):
-    write_wav(args.out, rate, filtered)
-
-else:
-    play(rate, filtered)
