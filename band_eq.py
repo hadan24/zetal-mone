@@ -1,16 +1,8 @@
 # Heavily built upon what was done in the 2nd homework assignment.
-from wav_io import args, rate
+from wav_io import args, rate, knob_to_gain
 from distort import distorted
 from numpy import transpose, multiply, column_stack
 from scipy.signal import firwin, lfilter
-
-# calculates a gain coefficient based on the knob value, 
-# knob offset, and a 3 db per volume set increase.
-def knob_to_gain(knob_val, knob_offset):
-    if knob_val < 0.1:
-        return 0
-    db = 3.0 * (knob_val - knob_offset)
-    return pow(10.0, db / 20.0)
 
 def filter(rate, data):
     # scipy cookbook documentation for making a low pass filter, adapted for band and highpass filters
