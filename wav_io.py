@@ -104,8 +104,8 @@ def tone_args():
     argp.add_argument("wav", help="input audio file")
     return argp.parse_args()
 
-# calculates a gain coefficient based on the knob value, 
-# knob offset, and a 3 db per volume set increase.
+# calculates a gain coefficient based on the knob value, knob offset,
+# and a 3 db per volume set increase. Based heavily on hw 2
 def knob_to_gain(knob_val, knob_offset):
     if knob_val < 0.1:
         return 0
