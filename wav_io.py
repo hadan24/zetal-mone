@@ -87,13 +87,13 @@ def tone_args():
     )
     argp.add_argument(
         "--out",
-        help="write to WAV file instead of playing",
+        help="write output to WAV file instead of playing",
     )
     argp.add_argument(
         "--distortion",
-        help="distortion level emphasis in 3dB units (default 5 = 0 dB, 0 = no distortion)",
+        help="amount of distortion (default 0 = no distortion)",
         type=np.float64,
-        default=5,
+        default=0,
     )
     argp.add_argument(
         "--tone",

@@ -1,4 +1,4 @@
-from wav_io import args, write_wav, rate, play
+from wav_io import write_wav, play, args, rate
 from band_eq import filtered
 
 # either writing the new wav file, or playing it - whichever was selected.
