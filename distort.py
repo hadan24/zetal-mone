@@ -16,7 +16,7 @@ normalize_factor = (1.88 ** (args.distortion - 8.3)) + 1
 taps = firwin(255, 265, pass_zero = False, fs = rate, window=('kaiser', 13.5))
 tone_input = knob_to_gain(args.tone, 5)
 
-# a 2D array indicates a stereo file, so it must be transposed, and the channels processed independently
+# A 2D array indicates a stereo file, so it must be transposed, and the channels processed independently
 # https://numpy.org/doc/stable/reference/generated/numpy.transpose.html
 if (data.ndim == 2):
 	transposed = transpose(data)
@@ -29,16 +29,16 @@ if (data.ndim == 2):
 	right_channel = clip(right_channel, -clip_amplitude, clip_amplitude) * normalize_factor
 
 	# Apply tone control to shape distortion sound
-	# intended shape was something like the screenshots roughly halfway down this blog post:
+	# The intended shape was something like the screenshots roughly halfway down this blog post:
 	# https://digilent.com/blog/sine-waves-and-guitar-effects-pedals/
 	left_channel = multiply(tone_input, lfilter(taps, 1, left_channel))
 	right_channel = multiply(tone_input, lfilter(taps, 1, right_channel))
     
-	# putting the channels back together once they've been filtered
+	# Putting the channels back together once they've been filtered
 	stereo_data = column_stack((left_channel, right_channel))
 	distorted = stereo_data
 
-# otherwise, the file is mono and can be processed normally.
+# Otherwise, the file is mono and can be processed normally.
 else:
 	distorted = clip(data, -clip_amplitude, clip_amplitude) * normalize_factor
 	distorted = multiply(tone_input, lfilter(taps, 1, distorted))
